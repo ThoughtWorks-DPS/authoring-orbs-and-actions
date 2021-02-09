@@ -1,6 +1,6 @@
 <div align="center">
 	<p>
-		<img alt="CircleCI Logo" src="https://raw.githubusercontent.com/ThoughtWorks-DPS/authoring-orbs/master/dps.png?sanitize=true" width="75" />
+		<img alt="CircleCI Logo" src="https://raw.githubusercontent.com/ThoughtWorks-DPS/authoring-orbs/master/dps.png" width="75" />
 	</p>
   <h1>Authoring Orbs</h1>
   <h5>Guides and documentation for the ThoughtWorks-DPS series of CircleCI Orbs</h5>
