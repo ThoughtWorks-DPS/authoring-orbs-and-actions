@@ -1,0 +1,93 @@
+version: 2.1
+
+setup: true
+
+orbs:
+  orb-tools: circleci/orb-tools@12.1.0     # use the officiel circleci orb-tools orb for lifecycle management
+  shellcheck: circleci/shellcheck@3.2.0
+  do: twdps/pipeline-events@3.2.0          # consider including functionality for posting message to a chat channel
+  op: twdps/onepassword@3.0.0              # or for fetching credentials as needed for integration testing
+
+globals:
+  - &context <your-context>                # include your team's circleci api-token
+  - &orb-name <namespace>/<orb>            # set to your org namespace and orb name
+
+on-push-main: &on-push-main
+  branches:
+    only: /main/
+  tags:
+    ignore: /.*/
+
+on-tag-main: &on-tag-main
+  branches:
+    ignore: /.*/
+  tags:
+    only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+
+workflows:
+
+  development build and test:
+    jobs:
+
+      - orb-tools/lint:
+          filters: *on-push-main
+
+      - orb-tools/review:
+          max_command_length: 100
+          exclude: RC010
+          filters: *on-push-main
+
+      - shellcheck/check:
+          filters: *on-push-main
+
+      - orb-tools/pack:
+          filters: *on-push-main
+
+      - orb-tools/publish:
+          name: publish development package
+          context: *context
+          orb_name: *orb-name
+          vcs_type: << pipeline.project.type >>
+          filters: *on-push-main
+          requires:
+            - orb-tools/lint
+            - orb-tools/review
+            - shellcheck/check
+            - orb-tools/pack
+
+      - orb-tools/continue:
+          name: Launch integration test pipeline
+          context: *context
+          orb_name: *orb-name
+          config_path: .circleci/integration-test.yml
+          pipeline_number: << pipeline.number >>
+          vcs_type: << pipeline.project.type >>
+          filters: *on-push-main
+          requires:
+            - publish development package
+
+  release:
+    jobs:
+      - orb-tools/pack:
+          filters: *on-tag-main
+
+      - orb-tools/publish:
+          name: publish release version
+          context: *context
+          orb_name: *orb-name
+          vcs_type: << pipeline.project.type >>
+          pub_type: production
+          filters: *on-tag-main
+          requires:
+            - orb-tools/pack
+
+      - do/slack:                             # example message upon success
+          context: *context
+          channel: lab-events
+          message: "New <namespace>/<orb> orb release"
+          include-tag: true
+          filters: *on-tag-main
+          before-message:
+            - op/env
+          requires:
+            - publish release version

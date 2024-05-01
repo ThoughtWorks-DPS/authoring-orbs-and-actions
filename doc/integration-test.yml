@@ -1,0 +1,28 @@
+---
+version: 2.1
+
+orbs:
+  op: <namespace>/<orb>@dev:<<pipeline.git.revision>>  # set to your org namespace and orb name
+
+globals:
+  - &context <your-context>
+
+# commands:
+
+jobs:
+
+  test orb commands:
+    docker:
+      - image: <docker image> or 
+    steps:
+      - checkout
+      - setup_remote_docker
+      # steps to perform the commands and confirm the results
+
+workflows:
+
+  integration tests:
+    jobs:
+      # create jobs to test command
+      - test orb commands
+      # reference orb jobs to perform job tests
