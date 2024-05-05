@@ -4,11 +4,11 @@
     <br />
 		<img alt="DPS Title" src="https://raw.githubusercontent.com/ThoughtWorks-DPS/static/master/EMPCPlatformStarterKitsImage.png" width=350/>
 	</p>
-  <h3>authoring orbs</h3>
+  <h3>authoring orbs and actions</h3>
 </div>
 <br />
 
-EMPC Lab guidelines for authoring CircleCI orbs.  
+EMPC Lab guidelines for authoring CircleCI orbs and GitHub Actions.  
 
 1. [design goals](doc/design_goals.md)
 2. [project setup](doc/project_setup.md)
