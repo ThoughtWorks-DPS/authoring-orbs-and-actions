@@ -9,8 +9,18 @@
 </div>
 <br />
 
+
+### Orb setup  
+
 1. Create a new repository
 2. Create new orb entry in circleci orb registry `circleci orb create <namespace>/<orb> [--private]`. See [documentation](https://circleci.com/docs/create-an-orb/).
 3. Use `circleci orb init` to generate the starting folder/file structure
 4. Edit ISSUE and PR templates for correct org, repo and orb naming
+4. Add pre-commit style web hooks for local code analysis. [Example](/doc/pre-commit-config.yaml).
+
+### Action setup
+
+1. Create a new repository
+2. Clone the contents of [psk-kit-github-action](https://github.com/ThoughtWorks-DPS/psk-kit-github-action)
+4. Edit ISSUE and PR templates for correct org, repo and action naming
 4. Add pre-commit style web hooks for local code analysis. [Example](/doc/pre-commit-config.yaml).
